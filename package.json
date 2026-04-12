@@ -1,7 +1,7 @@
 {
   "name": "backend-course-project",
   "version": "1.0.0",
-  "description": "WOHI 2 project",
+  "description": "Demo project",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
