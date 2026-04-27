@@ -1,0 +1,20 @@
+meta {
+  name: Edit question
+  type: http
+  seq: 1
+}
+
+put {
+  url: http://localhost:3006/api/questions/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+  "title": "Intro to http",
+  "content": "Overwritten",
+  "date": "18.4.2026",
+  "keywords": "new"
+  }
+}

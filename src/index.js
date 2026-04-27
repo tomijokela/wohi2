@@ -1,12 +1,18 @@
 const express = require("express");
 const app = express();
-
-const prisma = require("./lib/prisma");
+const postsRouter = require("./routes/posts");
+const authRouter = require("./routes/auth");
 
 const PORT = process.env.PORT || 3000;
 
+const prisma = require("./lib/prisma");
+
 app.use(express.json());
-//app.use("/api/posts", postsRouter);
+//app.use("/api/questions", questionsRouter);
+
+app.use("/api/auth", authRouter);
+app.use("/api/posts", postsRouter);
+
 
 app.use((req, res) => {
   res.status(404).json({ msg: "Not found" });

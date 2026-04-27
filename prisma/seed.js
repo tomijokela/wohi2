@@ -1,4 +1,6 @@
-const { PrismaClient } = require("@prisma/client");
+//const { PrismaClient } = require("@prisma/client");
+const { PrismaClient } = require('../src/generated/prisma')
+const bcrypt = require("bcrypt");
 const prisma = new PrismaClient();
 
 const seedPosts = [
@@ -32,32 +34,46 @@ const seedPosts = [
   },
 ];
 
-async function main() {
-  await prisma.post.deleteMany();
-  await prisma.keyword.deleteMany();
 
-  for (const post of seedPosts) {
+
+async function main() {
+  // Create a default user
+  const hashedPassword = await bcrypt.hash("1234", 10);
+  const user = await prisma.user.create({
+    data: {
+      email: "admin@example.com",
+      password: hashedPassword,
+      name: "Admin User",
+    },
+  });
+
+  console.log("Created user:", user.email);
+
+  // Create posts associated with the user
+  //const posts = [...]
+  for (const post of posts) {
     await prisma.post.create({
       data: {
         title: post.title,
         date: post.date,
         content: post.content,
+        userId: user.id,
         keywords: {
           connectOrCreate: post.keywords.map((kw) => ({
-            where: { name: kw },
-            create: { name: kw },
+            where: { name: kw }, create: { name: kw },
           })),
         },
       },
     });
   }
 
-  console.log("Seed data inserted successfully");
+  console.log("Seeded 4 posts");
 }
+
 
 main()
   .catch((e) => {
     console.error(e);
     process.exit(1);
   })
-  .finally(() => prisma.$disconnect());
+  .finally(async () => prisma.$disconnect());

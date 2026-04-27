@@ -19,6 +19,8 @@ model Post {
   date     DateTime
   content  String    @db.Text
   keywords Keyword[]
+  userId   Int
+  user     User @relation(fields: [userId], references: [id])
 
   @@map("posts")
 }
@@ -30,3 +32,13 @@ model Keyword {
 
   @@map("keywords")
 }
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique @db.VarChar(255)
+  password String @db.VarChar(255)
+  name     String @db.VarChar(100)
+  posts    Post[]
+}
+
+
