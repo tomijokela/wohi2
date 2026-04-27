@@ -7,8 +7,6 @@ const prisma = require("../lib/prisma");
 const SECRET = process.env.JWT_SECRET;
 // Here we will add all routes related to authentication
 
-module.exports = router; // This should be the last line
-
 // POST /api/auth/register
 router.post("/register", async (req, res) => {
   const { email, password, name } = req.body;
@@ -71,3 +69,5 @@ router.post("/login", async (req, res) => {
 
   res.json({ token });
 });
+
+module.exports = router; // This should be the last line
